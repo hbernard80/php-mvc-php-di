@@ -1,0 +1,32 @@
+# [Sécurité] Masque le contenu des répertoires (Prod)
+# Options -Indexes
+
+# Active le suivi des liens symboliques
+Options +FollowSymLinks
+
+# Active le module ModRewrite
+RewriteEngine On
+RewriteBase /
+
+# Exclut le template d'erreurs de la réécriture
+RewriteCond %{REQUEST_URI} !^/templates/errors/
+
+# Si ce n'est pas un fichier
+RewriteCond %{REQUEST_FILENAME} !-f
+# et si ce n'est pas un répertoire
+RewriteCond %{REQUEST_FILENAME} !-d
+
+# On redirige tout le reste dans public/index.php
+# -hors exclusions précédentes)
+RewriteRule ^$ public/index.php [L]
+RewriteRule ^(.*)$ public/index.php [QSA,L]
+
+# Définit le fuseau horaire en France
+php_value date.timezone 'Europe/Paris'
+
+# Encodage par défaut des fichiers textes et HTML
+AddDefaultCharset UTF-8
+
+# [Sécurité] Désactive l'affichage d'informations techniques
+# sur le serveur Apache (versions, mail de l'admin...) 
+ServerSignature Off
